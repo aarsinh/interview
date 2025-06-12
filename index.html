@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Upload Client</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+
+        .upload-area.drag-over {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .status {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .status.info {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status.success {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: #757575;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #616161;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .connection-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .connection-status.connected {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .connection-status.disconnected {
+            background: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="connection-status disconnected" id="connectionStatus">Disconnected</div>
+    <div class="container">
+        <h1>Video Streaming Upload Client</h1>
+
+        <div class="upload-area" id="uploadArea">
+            <p>Click to select or drag and drop your video file here</p>
+            <input type="file" id="fileInput" accept="video/*">
+        </div>
+
+        <div class="file-info" id="fileInfo">
+            <h3>Selected File:</h3>
+            <p id="fileName"></p>
+            <p id="fileSize"></p>
+            <p id="fileType"></p>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="controls">
+            <button class="btn-primary" id="uploadBtn" disabled>Upload Video</button>
+            <button class="btn-danger" id="cancelBtn" style="display: none;">Cancel Upload</button>
+            <button class="btn-secondary" id="newUploadBtn" style="display:none;">Upload New</button>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat">
+                <div class="stat-value" id="speedStat">0 MB/s</div>
+                <div class="stat-label">Upload Speed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="timeStat">0s</div>
+                <div class="stat-label">Time Elapsed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="chunksStat">0/0</div>
+                <div class="stat-label">Chunks Sent</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class VideoStreamingClient {
+            constructor() {
+                this.ws = null;
+                this.file = null;
+                this.isUploading = false;
+                this.isPaused = false;
+                this.keepCompletedVisible = true;
+                this.chunkSize = 1024 * 1024;
+                this.currentChunk = 0;
+                this.totalChunks = 0;
+                this.uploadStartTime = null;
+                this.bytesUploaded = 0;
+                this.reconnectAttempts = 0;
+                this.maxReconnectAttempts = 5;
+                this.reconnectDelay = 1000;
+                this.pendingChunks = 0;
+                this.maxConcurrentChunks = 3;
+                this.shouldMaintainConnection = true;
+                this.hasCompletedUpload = false;
+
+                this.initializeElements();
+                this.setupEventListeners();
+                this.connectWebSocket();
+            }
+
+            initializeElements() {
+                this.elements = {
+                    uploadArea: document.getElementById('uploadArea'),
+                    fileInput: document.getElementById('fileInput'),
+                    fileInfo: document.getElementById('fileInfo'),
+                    fileName: document.getElementById('fileName'),
+                    fileSize: document.getElementById('fileSize'),
+                    fileType: document.getElementById('fileType'),
+                    progressContainer: document.getElementById('progressContainer'),
+                    progressFill: document.getElementById('progressFill'),
+                    status: document.getElementById('status'),
+                    uploadBtn: document.getElementById('uploadBtn'),
+                    cancelBtn: document.getElementById('cancelBtn'),
+                    newUploadBtn: document.getElementById('newUploadBtn'),
+                    stats: document.getElementById('stats'),
+                    speedStat: document.getElementById('speedStat'),
+                    timeStat: document.getElementById('timeStat'),
+                    chunksStat: document.getElementById('chunksStat'),
+                    connectionStatus: document.getElementById('connectionStatus')
+                };
+            }
+
+            setupEventListeners() {
+                this.elements.uploadArea.addEventListener('click', () => {
+                    this.elements.fileInput.click();
+                });
+
+                this.elements.fileInput.addEventListener('change', (e) => {
+                    this.handleFileSelect(e.target.files[0]);
+                });
+
+                this.elements.uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    this.elements.uploadArea.classList.add('drag-over');
+                });
+
+                this.elements.uploadArea.addEventListener('dragleave', () => {
+                    this.elements.uploadArea.classList.remove('drag-over');
+                });
+
+                this.elements.uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    this.elements.uploadArea.classList.remove('drag-over');
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('video/')) {
+                        this.handleFileSelect(file);
+                    } else {
+                        this.showStatus('Please select a valid video file', 'error');
+                    }
+                });
+
+                this.elements.uploadBtn.addEventListener('click', () => this.startUpload());
+                this.elements.cancelBtn.addEventListener('click', () => this.cancelUpload());
+                this.elements.newUploadBtn.addEventListener('click', () => this.resetUI());
+
+                window.addEventListener('beforeunload', () => {
+                    this.shouldMaintainConnection = false;
+                    if (this.ws) {
+                        this.ws.close();
+                    }
+                });
+            }
+
+            updateConnectionStatus(connected) {
+                this.elements.connectionStatus.textContent = connected ? 'Connected' : 'Disconnected';
+                this.elements.connectionStatus.className = `connection-status ${connected ? 'connected' : 'disconnected'}`;
+            }
+
+            connectWebSocket() {
+                const wsUrl = 'ws://localhost:1738';
+                console.log('Attempting to connect to WebSocket...');
+                this.showStatus('Connecting to server...', 'info');
+
+                try {
+                    this.ws = new WebSocket(wsUrl);
+                    this.ws.binaryType = 'arraybuffer';
+
+                    this.ws.onopen = () => {
+                        console.log('WebSocket connected');
+                        this.updateConnectionStatus(true);
+                        this.showStatus('Connected to server', 'success');
+                        this.reconnectAttempts = 0;
+                        this.startHeartbeat();
+                    };
+
+                    this.ws.onmessage = (event) => {
+                        this.handleServerMessage(JSON.parse(event.data));
+                    };
+
+                    this.ws.onerror = (error) => {
+                        console.error('WebSocket error:', error);
+                        this.updateConnectionStatus(false);
+                        this.showStatus('Connection error', 'error');
+                    };
+
+                    this.ws.onclose = (event) => {
+                        console.log('WebSocket closed:', event.code, event.reason);
+                        this.updateConnectionStatus(false);
+                        this.stopHeartbeat();
+
+                        if (this.shouldMaintainConnection) {
+                            if (this.isUploading) {
+                                this.showStatus('Connection lost during upload. Attempting to reconnect...', 'error');
+                            } else {
+                                this.showStatus('Connection lost. Attempting to reconnect...', 'info');
+                            }
+                            this.attemptReconnect();
+                        } else {
+                            this.showStatus('Disconnected from server', 'info');
+                        }
+                    };
+                } catch (error) {
+                    console.error('Failed to connect:', error);
+                    this.updateConnectionStatus(false);
+                    this.showStatus('Failed to connect to server', 'error');
+                }
+            }
+
+            startHeartbeat() {
+                this.heartbeatInterval = setInterval(() => {
+                    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                        this.sendMessage({ type: 'ping' });
+                    }
+                }, 15000);
+            }
+
+            stopHeartbeat() {
+                if (this.heartbeatInterval) {
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
+            }
+
+            attemptReconnect() {
+                if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                    this.showStatus('Failed to reconnect. Please refresh the page.', 'error');
+                    this.isUploading = false;
+                    return;
+                }
+
+                this.reconnectAttempts++;
+                console.log(`Reconnection attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
+                setTimeout(() => {
+                    if (this.shouldMaintainConnection) {
+                        this.connectWebSocket();
+                    }
+                }, this.reconnectDelay * this.reconnectAttempts);
+            }
+
+            handleFileSelect(file) {
+                if (!file || !file.type.startsWith('video/')) {
+                    this.showStatus('Please select a valid video file', 'error');
+                    return;
+                }
+
+                this.file = file;
+                this.totalChunks = Math.ceil(file.size / this.chunkSize);
+
+                this.elements.fileName.textContent = file.name;
+                this.elements.fileSize.textContent = `Size: ${this.formatFileSize(file.size)}`;
+                this.elements.fileType.textContent = `Type: ${file.type}`;
+                this.elements.fileInfo.style.display = 'block';
+
+                this.elements.uploadBtn.disabled = false;
+                this.showStatus('File selected. Ready to upload.', 'info');
+            }
+
+            async calculateChecksum(file) {
+                const arrayBuffer = await file.arrayBuffer();
+                const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            async startUpload() {
+                if (!this.file || this.isUploading) return;
+
+                if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+                    this.showStatus('Not connected to server. Please wait...', 'error');
+                    return;
+                }
+
+                this.isUploading = true;
+                this.hasCompletedUpload = false;
+                this.currentChunk = 0;
+                this.bytesUploaded = 0;
+                this.pendingChunks = 0;
+                this.uploadStartTime = Date.now();
+
+                this.elements.uploadBtn.style.display = 'none';
+                this.elements.cancelBtn.style.display = 'inline-block';
+                this.elements.progressContainer.style.display = 'block';
+                this.elements.stats.style.display = 'grid';
+
+                let checksum = '';
+                if (this.file.size < 10 * 1024 * 1024) {
+                    this.showStatus('Calculating file checksum...', 'info');
+                    try {
+                        checksum = await this.calculateChecksum(this.file);
+                    } catch (error) {
+                        console.error('Checksum calculation failed:', error);
+                    }
+                }
+
+                this.sendMessage({
+                    type: 'start_upload',
+                    filename: this.file.name,
+                    filesize: this.file.size,
+                    checksum: checksum,
+                    totalChunks: this.totalChunks
+                });
+            }
+
+            async uploadNextChunk() {
+                if (!this.isUploading || this.currentChunk >= this.totalChunks) return;
+                if (this.pendingChunks >= this.maxConcurrentChunks) return;
+                if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+                    console.error('WebSocket not connected, cannot send chunk');
+                    return;
+                }
+
+                const start = this.currentChunk * this.chunkSize;
+                const end = Math.min(start + this.chunkSize, this.file.size);
+                const chunk = this.file.slice(start, end);
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                        this.ws.send(e.target.result);
+                        this.pendingChunks++;
+                    }
+                };
+                reader.readAsArrayBuffer(chunk);
+
+                this.currentChunk++;
+                this.bytesUploaded = end;
+                this.updateProgress();
+            }
+
+            updateProgress() {
+                const progress = (this.bytesUploaded / this.file.size) * 100;
+                this.elements.progressFill.style.width = `${progress}%`;
+                this.elements.progressFill.textContent = `${Math.round(progress)}%`;
+
+                const elapsed = (Date.now() - this.uploadStartTime) / 1000;
+                const speed = this.bytesUploaded / elapsed;
+
+                this.elements.speedStat.textContent = `${(speed / (1024 * 1024)).toFixed(2)} MB/s`;
+                this.elements.timeStat.textContent = `${Math.round(elapsed)}s`;
+                this.elements.chunksStat.textContent = `${this.currentChunk}/${this.totalChunks}`;
+            }
+
+            async handleServerMessage(data) {
+                switch (data.type) {
+                    case 'upload_started':
+                        this.showStatus('Upload started', 'info');
+                        for (let i = 0; i < this.maxConcurrentChunks && i < this.totalChunks; i++) {
+                            this.uploadNextChunk();
+                        }
+                        break;
+
+                    case 'chunk_received':
+                        this.pendingChunks--;
+                        this.uploadNextChunk();
+                        break;
+
+                    case 'upload_completed':
+                        this.isUploading = false;
+                        this.hasCompletedUpload = true;
+                        this.bytesUploaded = this.file.size;
+                        this.updateProgress();
+                        this.showStatus(
+                            `Upload completed! File saved as: ${data.filename}`,
+                            'success'
+                        );
+                        this.elements.cancelBtn.style.display = 'none';
+                        this.elements.newUploadBtn.style.display = 'inline-block';
+
+                        console.log('Upload completed, maintaining connection');
+                        break;
+
+                    case 'upload_cancelled':
+                        this.showStatus(data.message || 'Upload cancelled', 'info');
+                        break;
+
+                    case 'error':
+                        this.showStatus(`Error: ${data.message}`, 'error');
+                        if (this.isUploading) {
+                            this.cancelUpload();
+                        }
+                        break;
+
+                    case 'pong':
+                        break;
+
+                    default:
+                        console.log('Unknown message type:', data.type);
+                }
+            }
+
+            cancelUpload() {
+                if (!this.isUploading) return;
+
+                this.isUploading = false;
+                this.sendMessage({ type: 'cancel_upload' });
+
+                this.showStatus('Upload cancelled', 'info');
+                this.elements.cancelBtn.style.display = 'none';
+                this.elements.uploadBtn.style.display = 'inline-block';
+            }
+
+            resetUI() {
+                console.log('User requested UI reset');
+
+                this.file = null;
+                this.isUploading = false;
+                this.hasCompletedUpload = false;
+                this.currentChunk = 0;
+                this.bytesUploaded = 0;
+
+                this.elements.fileInput.value = '';
+                this.elements.fileInfo.style.display = 'none';
+
+                this.elements.progressFill.style.width = '0%';
+                this.elements.progressFill.textContent = '0%';
+                this.elements.progressContainer.style.display = 'none';
+                this.elements.stats.style.display = 'none';
+
+                this.elements.uploadBtn.disabled = true;
+                this.elements.uploadBtn.style.display = 'inline-block';
+                this.elements.cancelBtn.style.display = 'none';
+                this.elements.newUploadBtn.style.display = 'none';
+
+                this.showStatus('Select a new video to upload.', 'info');
+            }
+
+            sendMessage(data) {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify(data));
+                } else {
+                    console.error('Cannot send message, WebSocket not connected');
+                }
+            }
+
+            showStatus(message, type = 'info', persist = false) {
+                this.elements.status.textContent = message;
+                this.elements.status.className = `status ${type}`;
+                this.elements.status.style.display = 'block';
+
+                if (!persist && type === 'info') {
+                    clearTimeout(this._statusTimer);
+                    this._statusTimer = setTimeout(() => {
+                        this.elements.status.style.display = 'none';
+                    }, 5000);
+                }
+            }
+
+            formatFileSize(bytes) {
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                if (bytes === 0) return '0 B';
+                const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new VideoStreamingClient();
+        });
+    </script>
+</body>
+
+</html>

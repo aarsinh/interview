@@ -1,0 +1,357 @@
+{
+  "video": "20250612_143014_new.mp4",
+  "results": [
+    {
+      "timestamp": 0.9663444444444445,
+      "alert": {
+        "timestamp": 1749718821.222699,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.0,
+        "yaw": 0.33078683599739456,
+        "pitch": 0.11099788348542282,
+        "confidence": 0.958668113480082
+      }
+    },
+    {
+      "timestamp": 1.032988888888889,
+      "alert": {
+        "timestamp": 1749718821.605294,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.016018181582959083,
+        "yaw": 0.3230057148143672,
+        "pitch": 0.08035743285345166,
+        "confidence": 0.9752942662863096
+      }
+    },
+    {
+      "timestamp": 2.0326555555555554,
+      "alert": {
+        "timestamp": 1749718828.2337532,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.024871555624930555,
+        "yaw": 0.2390950387610454,
+        "pitch": 0.01948875161274799,
+        "confidence": 0.9584605444040333
+      }
+    },
+    {
+      "timestamp": 3.032322222222222,
+      "alert": {
+        "timestamp": 1749718835.165331,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.023841725052858427,
+        "yaw": 0.13821964873121723,
+        "pitch": 0.10740098296847732,
+        "confidence": 0.8936880957709257
+      }
+    },
+    {
+      "timestamp": 4.031988888888889,
+      "alert": {
+        "timestamp": 1749718841.195712,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.004751664269627197,
+        "yaw": 0.11784057775581155,
+        "pitch": 0.022348094547020442,
+        "confidence": 0.9797133643388806
+      }
+    },
+    {
+      "timestamp": 5.031655555555556,
+      "alert": {
+        "timestamp": 1749718847.327434,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.28402887816083344,
+        "yaw": -0.010457403075818975,
+        "pitch": -0.179757669927176,
+        "confidence": 0.8899830632697172
+      }
+    },
+    {
+      "timestamp": 6.031322222222222,
+      "alert": {
+        "timestamp": 1749718853.847539,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.009936930101051409,
+        "yaw": -0.37115671995935096,
+        "pitch": 0.08789971096402008,
+        "confidence": 0.8982134770117569
+      }
+    },
+    {
+      "timestamp": 7.030988888888889,
+      "alert": {
+        "timestamp": 1749718860.3656561,
+        "is_looking_away": false,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 0,
+        "looking_away_duration": 0,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.004997353217539396,
+        "yaw": -0.3059075026884586,
+        "pitch": 0.04596887629276205,
+        "confidence": 0.93876456649544
+      }
+    },
+    {
+      "timestamp": 8.030655555555557,
+      "alert": {
+        "timestamp": 1749718866.5958211,
+        "is_looking_away": true,
+        "alert_level": "NO_ALERT",
+        "suspicion_score": 2.0,
+        "total_alerts": 0,
+        "looking_away_duration": 0.5931682586669922,
+        "total_away_time": 0,
+        "head_movement_velocity": 0.021671965031030294,
+        "yaw": 0.7378280689182216,
+        "pitch": 0.11430070385056049,
+        "confidence": 0.8679630251034833
+      }
+    },
+    {
+      "timestamp": 9.030322222222223,
+      "alert": {
+        "timestamp": 1749718872.731293,
+        "is_looking_away": true,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 8.70000000000001,
+        "total_alerts": 1,
+        "looking_away_duration": 0.0,
+        "total_away_time": 3.748106002807617,
+        "head_movement_velocity": 0.24973302837551006,
+        "yaw": 0.5665876893755724,
+        "pitch": 0.12061886637654397,
+        "confidence": 0.8876568839548891
+      }
+    },
+    {
+      "timestamp": 10.029988888888889,
+      "alert": {
+        "timestamp": 1749718878.998976,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 14.90000000000002,
+        "total_alerts": 2,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.07594069900380754,
+        "yaw": 0.11971676399553913,
+        "pitch": -0.054350091621042415,
+        "confidence": 0.932735492767913
+      }
+    },
+    {
+      "timestamp": 11.029655555555555,
+      "alert": {
+        "timestamp": 1749718885.446851,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 8.900000000000041,
+        "total_alerts": 2,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.04329801206803389,
+        "yaw": -0.05127785361042475,
+        "pitch": -0.358770583279311,
+        "confidence": 0.8717816604454145
+      }
+    },
+    {
+      "timestamp": 12.029322222222223,
+      "alert": {
+        "timestamp": 1749718891.463222,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 2.9000000000000394,
+        "total_alerts": 3,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.018595481939170037,
+        "yaw": 0.04576928981260397,
+        "pitch": -0.3640606157496749,
+        "confidence": 0.9414083038959702
+      }
+    },
+    {
+      "timestamp": 13.02898888888889,
+      "alert": {
+        "timestamp": 1749718897.471968,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 3,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.022942273993637075,
+        "yaw": -0.023522729655003266,
+        "pitch": -0.4693438727709162,
+        "confidence": 0.9875081808950743
+      }
+    },
+    {
+      "timestamp": 14.028655555555556,
+      "alert": {
+        "timestamp": 1749718903.477244,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 4,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.017667182869961485,
+        "yaw": 0.10990154400743866,
+        "pitch": 0.1988693016169823,
+        "confidence": 0.968695027537497
+      }
+    },
+    {
+      "timestamp": 15.028322222222222,
+      "alert": {
+        "timestamp": 1749718909.5866182,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 5,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.0065271326883014225,
+        "yaw": 0.11980384161503738,
+        "pitch": -0.3010637561206676,
+        "confidence": 0.9164338201025833
+      }
+    },
+    {
+      "timestamp": 16.02798888888889,
+      "alert": {
+        "timestamp": 1749718915.991561,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 5,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.039243731991945356,
+        "yaw": -0.03413201376463119,
+        "pitch": -0.21191782397987863,
+        "confidence": 0.9421867831215354
+      }
+    },
+    {
+      "timestamp": 17.027655555555555,
+      "alert": {
+        "timestamp": 1749718922.288296,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 0,
+        "total_alerts": 6,
+        "looking_away_duration": 0,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.013827191345362689,
+        "yaw": -0.37320662382898295,
+        "pitch": 0.26637683689915637,
+        "confidence": 0.9352128754304435
+      }
+    },
+    {
+      "timestamp": 18.02732222222222,
+      "alert": {
+        "timestamp": 1749718928.5640802,
+        "is_looking_away": true,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 19.5,
+        "total_alerts": 7,
+        "looking_away_duration": 5.462582111358643,
+        "total_away_time": 7.29226016998291,
+        "head_movement_velocity": 0.021266896451657382,
+        "yaw": -0.5536749140579038,
+        "pitch": 0.13816053597463296,
+        "confidence": 0.7706190564398021
+      }
+    },
+    {
+      "timestamp": 19.02698888888889,
+      "alert": {
+        "timestamp": 1749718934.755759,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 24.300000000000015,
+        "total_alerts": 7,
+        "looking_away_duration": 0,
+        "total_away_time": 14.760648012161255,
+        "head_movement_velocity": 0.006849416861104891,
+        "yaw": 0.12065038573502691,
+        "pitch": 0.007409943603156908,
+        "confidence": 0.881478459037802
+      }
+    },
+    {
+      "timestamp": 20.026655555555557,
+      "alert": {
+        "timestamp": 1749718941.402689,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 18.300000000000036,
+        "total_alerts": 8,
+        "looking_away_duration": 0,
+        "total_away_time": 14.760648012161255,
+        "head_movement_velocity": 0.06123786032922794,
+        "yaw": 0.11789509389190846,
+        "pitch": -0.36602949829115705,
+        "confidence": 0.8798922713047947
+      }
+    },
+    {
+      "timestamp": 21.026322222222223,
+      "alert": {
+        "timestamp": 1749718947.816847,
+        "is_looking_away": false,
+        "alert_level": "ONGOING_ALERT",
+        "suspicion_score": 12.300000000000058,
+        "total_alerts": 8,
+        "looking_away_duration": 0,
+        "total_away_time": 14.760648012161255,
+        "head_movement_velocity": 0.009679262722991739,
+        "yaw": 0.13874806164912107,
+        "pitch": 0.117382328544399,
+        "confidence": 0.9568728043652247
+      }
+    }
+  ]
+}
