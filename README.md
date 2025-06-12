@@ -1,7 +1,7 @@
 First create a venv and install the required packages
 ```
 python -m venv venv
-source venv/bin/activate //or venv\Scripts\activate on windows
+source venv/bin/activate  # or venv\Scripts\activate on windows
 pip install -r requirements.txt
 ```
 
